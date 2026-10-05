@@ -1,0 +1,348 @@
+/* Design tokens + base styles. See DESIGN.md section 3. */
+
+:root {
+  --paper-rgb: 232 232 229; /* #E8E8E5 */
+  --paper-soft-rgb: 241 241 238; /* #F1F1EE */
+  --ink-rgb: 17 17 17; /* #111111 */
+  --glow: rgb(255 255 255 / 0.55);
+
+  --paper: rgb(var(--paper-rgb));
+  --paper-soft: rgb(var(--paper-soft-rgb));
+  --ink: rgb(var(--ink-rgb));
+  --ink-75: rgb(var(--ink-rgb) / 0.75);
+  --ink-60: rgb(var(--ink-rgb) / 0.64); /* >= 4.5:1 on paper, labels and secondary text */
+  --line: rgb(var(--ink-rgb) / 0.24);
+  --line-soft: rgb(var(--ink-rgb) / 0.11);
+  --tint: rgb(var(--ink-rgb) / 0.045);
+  --dot: rgb(var(--ink-rgb) / 0.13);
+
+  --surface-texture:
+    radial-gradient(circle at 1px 1px, rgb(var(--ink-rgb) / 0.12) 1px, transparent 1.7px),
+    radial-gradient(circle at 1px 1px, rgb(var(--ink-rgb) / 0.06) 1px, transparent 1.8px);
+  --surface-texture-size: 18px 18px, 72px 72px;
+  --hatch: repeating-linear-gradient(135deg, rgb(var(--ink-rgb) / 0.04) 0 1px, transparent 1px 12px);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.77, 0, 0.18, 1);
+
+  --frame-inset: 18px;
+  --frame-radius: 16px;
+  --header-h: 74px;
+  --footer-h: 44px;
+  --sidenav-w: 184px;
+  --stage-pad: clamp(22px, 3vw, 42px);
+
+  /* --font-space / --font-jet come from next/font (app/layout.js). Unlayered, so they win over Tailwind's theme layer. */
+  --font-display: var(--font-space), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jet), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper-rgb: 15 15 15;
+  --paper-soft-rgb: 24 24 24;
+  --ink-rgb: 236 236 233;
+  --glow: rgb(255 255 255 / 0.035);
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 768px) {
+  html,
+  body {
+    overflow: hidden;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Smooth colour swap when toggling the theme (class added briefly by ThemeToggle). */
+html.theme-switching,
+html.theme-switching * {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    fill 0.3s ease,
+    transform 0.3s var(--ease-out) !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 200;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  transform: translateY(-160%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* Typography helpers */
+.mono {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.label {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: clamp(0.68rem, 0.9vw, 0.78rem);
+  font-weight: 600;
+  color: var(--ink-60);
+}
+
+.display {
+  margin: 0;
+  font-size: clamp(2.9rem, 6.5vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+
+.display--page {
+  font-size: clamp(2.2rem, 4.6vw, 4.4rem);
+}
+
+.display--case {
+  font-size: clamp(2.2rem, 5vw, 4.8rem);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition:
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.16s ease;
+}
+
+.btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn:hover svg {
+  transform: translateX(2px);
+}
+
+.btn--solid {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn--solid:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn--sm {
+  height: 36px;
+  padding: 0 12px;
+  font-size: 0.68rem;
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-75);
+  transition:
+    background-color 0.16s ease,
+    color 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.icon-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+.icon-btn:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* Filter chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  background: transparent;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--ink-75);
+  transition:
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.chip:hover {
+  background: var(--tint);
+  color: var(--ink);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* Panels */
+.panel {
+  border: 1px solid var(--line);
+  background: rgb(var(--paper-soft-rgb) / 0.62);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-body {
+  padding: 18px 16px;
+}
+
+/* Key/value list */
+.kv {
+  margin: 0;
+}
+
+.kv > div {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.kv > div:first-child {
+  border-top: 0;
+}
+
+.kv dt {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  padding-top: 2px;
+}
+
+.kv dd {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Scene enter animation (template.js remounts on every navigation). */
+.reveal {
+  animation: reveal 0.6s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
