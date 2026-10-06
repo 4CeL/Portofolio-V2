@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 // Corner brackets that follow the pointer and lock onto interactive elements.
 // The native cursor stays visible; this is an extra layer for fine pointers only.
-const TARGETS = "a, button, summary, [data-cursor]";
+const TARGETS = "a, button, summary, select, input, textarea, label[for], [data-cursor]";
 const IDLE = 24;
 const PAD = 6;
 

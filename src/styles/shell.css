@@ -749,6 +749,55 @@ html[data-loader="skip"] .loader {
   }
 }
 
+/* Page transition (View Transitions API via React <ViewTransition>) --------- */
+/* The shell stays put: no animation on the root snapshot. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/* Old page: recedes (slight shrink, lift, blur) and fades out.
+   New page: revealed by a top-to-bottom wipe (same idea as the loader exit) while it settles up into place. */
+::view-transition-old(.page-swap) {
+  animation: page-out 260ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(.page-swap) {
+  animation: page-wipe 620ms var(--ease-io) 120ms both;
+}
+
+::view-transition-group(.page-swap) {
+  animation-duration: 760ms;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-18px) scale(0.985);
+    filter: blur(3px);
+  }
+}
+
+@keyframes page-wipe {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(28px);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
 /* Target cursor ------------------------------------------------------------ */
 .tcursor {
   position: fixed;

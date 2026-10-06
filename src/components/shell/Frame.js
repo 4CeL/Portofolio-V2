@@ -1,3 +1,4 @@
+import { ViewTransition } from "react";
 import Header from "./Header";
 import SideNav from "./SideNav";
 import StatusBar from "./StatusBar";
@@ -21,9 +22,14 @@ export default function Frame({ children }) {
         <Header />
         <div className="frame-body">
           <SideNav />
-          <main id="main" className="stage" tabIndex={-1}>
-            {children}
-          </main>
+          {/* Page transition: only the stage animates (class "page-swap", styles in shell.css).
+              Snapshotting the stage itself keeps the animation clipped to the stage box,
+              so long pages never slide over the header or status bar. */}
+          <ViewTransition update="page-swap" default="none">
+            <main id="main" className="stage" tabIndex={-1}>
+              {children}
+            </main>
+          </ViewTransition>
           <StatusBar />
         </div>
       </div>

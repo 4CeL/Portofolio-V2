@@ -2,7 +2,7 @@
 
 Monochrome portfolio for Stefanus Marcellino. Design rationale and decisions: [DESIGN.md](./DESIGN.md).
 
-Stack: Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS v4 (reset only), JavaScript. No UI/animation libraries.
+Stack: Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS v4 (reset only), JavaScript. No UI/animation libraries; tech logos on `/skills` come from `simple-icons` (CC0).
 
 ## Commands
 

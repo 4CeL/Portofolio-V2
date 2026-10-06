@@ -1,6 +1,7 @@
 import { domains, projects } from "@/content/projects";
 import PageHeading from "@/components/scenes/PageHeading";
 import ProjectConsole from "@/components/scenes/ProjectConsole";
+import { parseYears } from "@/lib/years";
 
 export const metadata = {
   title: "Projects",
@@ -23,8 +24,10 @@ export default function ProjectsPage() {
     links,
   }));
 
-  const years = projects.map((project) => Number(project.year)).filter(Number.isFinite);
-  const range = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : "";
+  const years = projects.map((project) => parseYears(project.year)).filter(Boolean);
+  const range = years.length
+    ? `${Math.min(...years.map((y) => y.start))}–${Math.max(...years.map((y) => y.end))}`
+    : "";
 
   return (
     <div className="projects">

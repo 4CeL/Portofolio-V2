@@ -191,6 +191,7 @@ Project archive.
 └──────────────────────────┴──────────────────────────────────────────┘
 ```
 - Item aktif: latar invert. Klik/hover/`↑↓` mengganti panel kanan tanpa pindah halaman.
+- Di ujung kanan baris filter domain ada tombol sort ikon saja (tiga garis mengecil, 30×30, tanpa teks). Klik membuka dropdown custom (`components/ui/SortMenu.js`, pola listbox): panel siku berbingkai tinta dengan bayangan offset tipis, opsi mono berpadding 9×12px, tanda centang di opsi aktif, highlight tint saat hover. Keyboard: ↓/↑ membuka dan berpindah, Home/End, Enter/Space memilih, Esc/Tab/klik di luar menutup; fokus kembali ke tombol. Kursor bracket mengunci ke tombol dan ke tiap opsi. Tombol ter-invert saat sort selain Featured aktif; tooltip menampilkan pilihan aktif. Pilihan: Featured (urutan di `projects.js`), Newest first, Oldest first, Name A–Z, Name Z–A. Tahun berbentuk rentang (`2024 - 2025`, `2023 - now`) diparse oleh `src/lib/years.js`: Newest memakai tahun akhir, Oldest tahun awal; urutan seri mengikuti Featured. Sort dan filter bisa digabung.
 - Task Management, EduNext, dan Nibble sudah tampil (total 9 project), tapi isinya masih placeholder: semuanya memakai konten dummy "digital wallet" dari v1 dan gambar Ubidots, lewat `placeholderProject()` di `src/content/projects.js` (ditandai `// DUMMY`).
 
 ### Case file `/projects/[slug]`
@@ -226,7 +227,7 @@ Di bawahnya matriks:
 | Docker · Git | Tooling | SmartHub |
 
 Nama project di kolom terakhir adalah link ke case file. Soft skill ditulis sebagai satu baris teks mono, bukan kartu ikon.
-Logo teknologi (jika dipakai) grayscale, dalam baris "logo loop" yang berhenti saat hover dan saat reduced-motion.
+Kolom TECH diawali logo teknologi 18px dari `simple-icons` (CC0, di-render di server lewat `components/ui/TechIcon.js`). Logo monokrom (tinta) saat diam dan berubah ke warna brand saat baris di-hover; warna brand yang terlalu gelap/terang (mis. Next.js hitam) tetap tinta. Baris gabungan menampilkan dua logo (PHP + Laravel, PostgreSQL + Supabase, React + Next.js). Tableau dan Ubidots tidak ada di simple-icons: Tableau memakai ikon grafik garis, Ubidots tidak diberi logo.
 
 ### 05 Experience
 Linimasa ala `git log --graph`, dibagi per tab (tanpa "All"): `[ORGANIZATION 4] [COMPETITION 1] [EDUCATION 2] [CERTIFICATE 1]`. Tab pertama (Organization) tampil default, angka di tiap tab = jumlah entri.
@@ -256,7 +257,7 @@ Form v1 tidak dibawa. Kontak cukup lewat `mailto:` dan link langsung (tanpa back
 2. **Dot field**: kanvas titik di belakang bingkai yang sedikit menjauh dari kursor dalam radius ±150px. Hanya untuk `pointer: fine`, pause saat tab tidak aktif.
 3. **Target cursor**: empat sudut bracket yang mengunci ke elemen interaktif saat hover. Hanya `pointer: fine`, kursor asli tetap ada (tidak disembunyikan).
 4. **Rotating pill**: kata di hero berganti tiap ±2.5 detik dengan slide vertikal. Berhenti saat reduced-motion (tampilkan kata pertama).
-5. **Pindah scene**: konten lama fade + geser 8px, konten baru reveal bertahap (stagger 60ms). Pakai View Transitions API, fallback tanpa animasi.
+5. **Pindah scene**: hanya area stage yang beranimasi; header, side-nav, dan status bar diam. Halaman lama mundur (naik 18px, skala 0.985, blur 3px) dan fade out (260ms); halaman baru dibuka dengan wipe dari atas ke bawah (`clip-path`, 620ms, mulai 120ms kemudian, easing sama dengan loader) sambil naik 28px ke posisinya, lalu elemen `.reveal` di scene baru muncul bertahap seperti biasa. Pakai React `<ViewTransition update="page-swap">` di `components/shell/Frame.js` + `experimental.viewTransition` di `next.config.mjs`; CSS di `shell.css`. Berlaku untuk klik link, tombol 1–6, dan Next/Prev case file; ganti sort/filter tidak memicu transisi. Browser tanpa View Transitions API dan reduced-motion: pindah instan.
 6. **Status bar live**: path route aktif, kategori project yang sedang dilihat, jam WIB.
 7. **Keyboard**: `1`–`6` pindah scene, `↑/↓` + `Enter` di daftar project, `Esc` menutup menu/preview CV. Tidak aktif saat fokus di input.
 8. **CV preview**: tombol "Open CV" membuka modal PDF dalam bingkai yang sama, dengan tombol download.

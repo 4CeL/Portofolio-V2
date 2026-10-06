@@ -117,6 +117,13 @@ export const Moon = (p) => (
   </Svg>
 );
 
+// Three shrinking lines (list filter / sort).
+export const Filter = (p) => (
+  <Svg {...p}>
+    <path d="M3 6h18M7 12h10M10 18h4" />
+  </Svg>
+);
+
 export const Plus = (p) => (
   <Svg {...p}>
     <path d="M12 5v14M5 12h14" />

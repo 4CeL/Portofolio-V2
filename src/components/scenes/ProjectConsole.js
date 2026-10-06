@@ -5,7 +5,33 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { setStatusContext } from "@/lib/status";
+import { parseYears } from "@/lib/years";
 import { ArrowRight, ArrowUpRight } from "@/components/ui/Icons";
+import SortMenu from "@/components/ui/SortMenu";
+
+// Sort options. "featured" keeps the order of src/content/projects.js.
+// Year sorts fall back to the featured order for projects from the same year.
+const SORTS = [
+  { id: "featured", label: "Featured" },
+  { id: "newest", label: "Newest first" },
+  { id: "oldest", label: "Oldest first" },
+  { id: "az", label: "Name A–Z" },
+  { id: "za", label: "Name Z–A" },
+];
+
+// Newest uses the last year of a range ("2024 - 2025" -> 2025), oldest uses the first one.
+// Projects without a year go to the end.
+function sortProjects(list, sort) {
+  const end = (p) => parseYears(p.year)?.end ?? -Infinity;
+  const start = (p) => parseYears(p.year)?.start ?? Infinity;
+  const byName = (a, b) => a.title.localeCompare(b.title, "en", { sensitivity: "base" });
+  const sorted = [...list]; // Array.prototype.sort is stable, so ties keep the featured order.
+  if (sort === "newest") sorted.sort((a, b) => end(b) - end(a));
+  if (sort === "oldest") sorted.sort((a, b) => start(a) - start(b));
+  if (sort === "az") sorted.sort(byName);
+  if (sort === "za") sorted.sort((a, b) => byName(b, a));
+  return sorted;
+}
 
 // Master-detail project browser: list + filters on the left, preview on the right.
 // Arrow keys move through the list, Enter opens the case file.
@@ -13,10 +39,12 @@ import { ArrowRight, ArrowUpRight } from "@/components/ui/Icons";
 export default function ProjectConsole({ projects, domains }) {
   const router = useRouter();
   const [filter, setFilter] = useState("all");
+  const [sort, setSort] = useState("featured");
   const [activeSlug, setActiveSlug] = useState(projects[0]?.slug);
   const listRef = useRef(null);
 
-  const visible = filter === "all" ? projects : projects.filter((p) => p.domains.includes(filter));
+  const filtered = filter === "all" ? projects : projects.filter((p) => p.domains.includes(filter));
+  const visible = sortProjects(filtered, sort);
   const active = visible.find((p) => p.slug === activeSlug) ?? visible[0];
 
   function select(project) {
@@ -52,18 +80,21 @@ export default function ProjectConsole({ projects, domains }) {
             {visible.length} project{visible.length === 1 ? "" : "s"}
           </strong>
         </div>
-        <div className="console-filters chips" role="group" aria-label="Filter by domain">
-          {domains.map((domain) => (
-            <button
-              key={domain.id}
-              type="button"
-              className="chip"
-              aria-pressed={filter === domain.id}
-              onClick={() => changeFilter(domain.id)}
-            >
-              {domain.label}
-            </button>
-          ))}
+        <div className="console-filters">
+          <div className="chips" role="group" aria-label="Filter by domain">
+            {domains.map((domain) => (
+              <button
+                key={domain.id}
+                type="button"
+                className="chip"
+                aria-pressed={filter === domain.id}
+                onClick={() => changeFilter(domain.id)}
+              >
+                {domain.label}
+              </button>
+            ))}
+          </div>
+          <SortMenu options={SORTS} value={sort} onChange={setSort} defaultValue="featured" />
         </div>
         <ul ref={listRef} className="pj-list" onKeyDown={onListKey}>
           {visible.map((project) => {

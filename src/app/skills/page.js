@@ -2,6 +2,7 @@ import Link from "next/link";
 import { skillSummary, skills, softSkills } from "@/content/skills";
 import { projects } from "@/content/projects";
 import PageHeading from "@/components/scenes/PageHeading";
+import TechIcon from "@/components/ui/TechIcon";
 
 export const metadata = {
   title: "Skills",
@@ -50,7 +51,16 @@ export default function SkillsPage() {
             {skills.map((skill) => (
               <tr key={skill.name}>
                 <th scope="row" data-label="Tech">
-                  {skill.name}
+                  <span className="tech-name">
+                    {skill.icons?.length ? (
+                      <span className="tech-icons">
+                        {skill.icons.map((icon) => (
+                          <TechIcon key={icon} name={icon} />
+                        ))}
+                      </span>
+                    ) : null}
+                    {skill.name}
+                  </span>
                 </th>
                 <td data-label="Domain">{skill.domain}</td>
                 <td data-label="Used in">

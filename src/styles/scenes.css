@@ -446,9 +446,123 @@
   font-size: 0.95rem;
 }
 
+/* Domain chips on the left, icon-only sort control on the right of the same row. */
 .console-filters {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   padding: 12px 16px;
   border-bottom: 1px solid var(--line);
+}
+
+.console-filters .chips {
+  flex: 1;
+  min-width: 0;
+}
+
+.sort-menu {
+  position: relative;
+  flex: none;
+}
+
+/* Square icon button that matches the chip height. */
+.sort-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-75);
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.sort-icon svg {
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+}
+
+.sort-icon:hover {
+  border-color: var(--ink);
+  background: var(--tint);
+  color: var(--ink);
+}
+
+/* A non-default sort is active: invert like a pressed chip. */
+.sort-icon[data-active="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.sort-icon[aria-expanded="true"] {
+  border-color: var(--ink);
+}
+
+/* Dropdown panel, right-aligned under the button. */
+.sort-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 196px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid var(--ink);
+  background: var(--paper-soft);
+  box-shadow: 4px 4px 0 rgb(var(--ink-rgb) / 0.12);
+  animation: reveal 0.18s var(--ease-out) both;
+}
+
+.sort-list:focus {
+  outline: none;
+}
+
+.sort-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 12px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--ink-75);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease;
+}
+
+.sort-option[data-highlight="true"] {
+  background: var(--tint);
+  color: var(--ink);
+}
+
+.sort-option[aria-selected="true"] {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.sort-option svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+/* Keyboard users get a visible marker on the highlighted option. */
+.sort-list:focus-visible .sort-option[data-highlight="true"] {
+  outline: 1.5px solid var(--ink);
+  outline-offset: -1.5px;
 }
 
 .pj-list {
@@ -948,6 +1062,32 @@
 
 .matrix tbody tr:hover {
   background: var(--tint);
+}
+
+/* Tech logos before the name: monochrome at rest, brand colour on row hover. */
+.tech-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Fixed width (room for two logos) so every tech name starts at the same x. */
+.tech-icons {
+  display: inline-flex;
+  gap: 4px;
+  width: 40px;
+}
+
+.tech-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--ink);
+  transition: color 0.2s ease;
+}
+
+.matrix tbody tr:hover .tech-icon {
+  color: var(--brand, var(--ink));
 }
 
 .matrix-note {

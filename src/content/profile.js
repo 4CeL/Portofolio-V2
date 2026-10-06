@@ -22,8 +22,8 @@ export const profile = {
     { key: "Study", value: "Computer Science, BINUS · 2023–now" },
     { key: "Focus", value: "Backend, database, data analytics" },
     { key: "Based", value: "Tangerang, Indonesia" },
-    { key: "Coding", value: "2+ years" },
-    { key: "Projects", value: "5+ completed" },
+    { key: "Coding", value: "3+ years" },
+    { key: "Projects", value: "8+ completed" },
   ],
   // Shown in the hero "GET /api/stefanus" block.
   api: {
