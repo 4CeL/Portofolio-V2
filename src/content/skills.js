@@ -13,13 +13,14 @@ export const skillSummary = {
 };
 
 export const skills = [
-  { name: "Python", domain: "Backend · Data", usedIn: ["air-purifier", "flood-analysis", "netflix-analysis"] },
-  { name: "Flask", domain: "Backend", usedIn: [], note: "Internship work" },
+  { name: "Python", domain: "Backend · Data", usedIn: ["task-management", "air-purifier", "flood-analysis", "netflix-analysis"] },
+  { name: "Flask", domain: "Backend", usedIn: ["task-management"] },
   { name: "MySQL", domain: "Database", usedIn: [], note: "Internship work" },
+  { name: "PostgreSQL · Supabase", domain: "Database", usedIn: ["task-management"] },
   { name: "MongoDB", domain: "Database · IoT", usedIn: ["air-purifier"] },
   { name: "n8n", domain: "Automation", usedIn: ["smarthub"] },
   { name: "Docker", domain: "Tooling", usedIn: ["smarthub"] },
-  { name: "React / Next.js", domain: "Frontend", usedIn: ["smarthub", "portfolio-v1"] },
+  { name: "React / Next.js", domain: "Frontend", usedIn: ["smarthub", "task-management", "portfolio-v1"] },
   { name: "Electron", domain: "Desktop", usedIn: ["smarthub"] },
   { name: "Ubidots · Streamlit", domain: "IoT · Dashboard", usedIn: ["air-purifier"] },
   { name: "Tableau", domain: "Data viz", usedIn: ["flood-analysis", "netflix-analysis"] },

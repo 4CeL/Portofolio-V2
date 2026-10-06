@@ -6,7 +6,8 @@
 // overview, problem, solution, features[], howItWorks[{ title, desc }],
 // contribution, challenges, stack[], links { github, demo }, draft
 
-import airPurifier from "@/assets/air-purifier.webp";
+import airPurifier from "@/assets/streamlit.webp"; // Streamlit dashboard (from src/assets/streamlit.jpg)
+import taskflow from "@/assets/taskflow.webp"; // from src/assets/taskflow.jpg
 import ubidots from "@/assets/ubidots.webp";
 import smarthub from "@/assets/smarthub.webp";
 import portfolio from "@/assets/portofolio.webp";
@@ -92,11 +93,44 @@ export const projects = [
     stack: ["Python", "ESP32", "MongoDB", "Ubidots", "Streamlit"],
     links: {},
   },
-  // DUMMY: placeholder content, see placeholderProject() below.
   {
-    ...placeholderProject(),
     slug: "task-management",
-    title: "Task Management Application",
+    title: "TaskFlow",
+    subtitle:
+      "A full-stack task management app with a Kanban board, a deadline-aware dashboard, task editing, and a calendar view.",
+    year: "2026",
+    category: "Full-stack Web App",
+    domains: ["web"],
+    status: "Deployed on Vercel",
+    role: "Solo: full-stack",
+    image: taskflow,
+    overview:
+      "TaskFlow is a task management web app. Users add tasks and move them across a Kanban board, see on the dashboard which tasks exist and which are close to their deadline, edit tasks they already entered, and check a calendar that shows the tasks due on each date. It has a React frontend, a Python (Flask) REST API, and a PostgreSQL database on Supabase.",
+    problem:
+      "Personal tasks are easy to lose track of when they live in notes or chat messages. Without one place that shows the status of every task and which deadlines are coming up, it is hard to decide what to work on next and easy to miss due dates.",
+    solution:
+      "One app that keeps every task with its status, priority, and due date. The Kanban board shows progress at a glance, the dashboard highlights overdue tasks and tasks due today, and the calendar lays tasks out by date. Each account only sees its own tasks, protected by JWT authentication.",
+    features: [
+      "Kanban board (Todo, In Progress, Done) with drag-and-drop to change status",
+      "Dashboard with task statistics, a status chart, and reminders for overdue and due-today tasks",
+      "Task list with search, status filter, and edit / delete",
+      "Calendar view that shows the tasks due on each date",
+      "Tasks with title, description, status, priority (Low / Medium / High), and due date",
+      "Register and login with email or Google, secured with bcrypt and JWT",
+      "Recent activity feed, profile page, and dark mode",
+    ],
+    howItWorks: [
+      { title: "Sign in", desc: "Users register or log in with email or Google. The Flask API returns a JWT that the React app sends with every request." },
+      { title: "Add tasks", desc: "Tasks are created with a status, priority, and due date, then stored per user in PostgreSQL on Supabase." },
+      { title: "Track", desc: "The Kanban board updates a task's status on drag; the dashboard and calendar show what is overdue, due today, or coming up." },
+      { title: "Update", desc: "Tasks can be edited or deleted from the task list, and every change is recorded in the recent activity feed." },
+    ],
+    contribution:
+      "I built the whole app on my own. On the frontend I made the React pages (Dashboard, Kanban, Tasks, Calendar, Profile) with Tailwind CSS, drag-and-drop with dnd-kit, charts with Recharts, and the calendar with react-calendar. On the backend I wrote a Flask REST API split into routes, business logic, and data layers, with JWT-protected endpoints, bcrypt password hashing, Google sign-in, and parameterized SQL queries.",
+    challenges:
+      "The database started on MySQL and was later migrated to PostgreSQL on Supabase, which meant adapting the queries and the connection setup to Postgres. Keeping the Kanban board, dashboard, and calendar consistent after every change, and making sure each user can only read and modify their own tasks, were the other main points I had to get right.",
+    stack: ["React", "Vite", "Tailwind CSS", "Python", "Flask", "PostgreSQL (Supabase)", "JWT"],
+    links: { github: "https://github.com/4CeL/task_management", demo: "https://task-workflow-app.vercel.app" },
   },
   {
     slug: "flood-analysis",
@@ -240,8 +274,8 @@ export const projects = [
     stack: ["HTML", "CSS", "JavaScript"], // DUMMY: confirm the tech used
     links: {},
   },
-  // DUMMY: EduNext and Nibble (and Task Management, placed after Air Purifier) share placeholder
-  // content (the "digital wallet" text from portfolio v1). Replace with the real project data.
+  // DUMMY: EduNext and Nibble share placeholder content (the "digital wallet" text from
+  // portfolio v1). Replace with the real project data.
   {
     ...placeholderProject(),
     slug: "edunext",
@@ -254,7 +288,7 @@ export const projects = [
   },
 ];
 
-// DUMMY content reused by Task Management, EduNext, and Nibble until their real data is ready.
+// DUMMY content reused by EduNext and Nibble until their real data is ready.
 function placeholderProject() {
   return {
     subtitle: "Secure and seamless asset management.",
